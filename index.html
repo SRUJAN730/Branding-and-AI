@@ -1,1 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaPulse AI - Clarity from Chaos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple: #47337A;
+            --gold: #E59C2D;
+            --cyan: #50C3D2;
+            --dark: #0F172A;
+            --slate: #E5E7EB;
+            --white: #F9FAFB;
+            --lavender: #F3F0F8;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--purple);
+        }
+
+        .nav-links a.active {
+            color: var(--purple);
+            border-bottom: 2px solid var(--purple);
+        }
+
+        .nav-cta {
+            background: var(--gold);
+            color: white !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 156, 45, 0.3);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--purple);
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+            min-height: calc(100vh - 200px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--lavender) 0%, var(--white) 100%);
+            padding: 5rem 5%;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: var(--purple);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #555;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--purple), var(--cyan));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(71, 51, 122, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--purple);
+            padding: 1rem 2rem;
+            border: 2px solid var(--purple);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: var(--purple);
+            color: white;
+        }
+
+        .hero-visual {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .data-viz {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(180deg, var(--cyan) 0%, var(--purple) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--purple);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        .products-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border: 2px solid var(--slate);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--purple), var(--cyan));
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(71, 51, 122, 0.2);
+            border-color: var(--purple);
+        }
+
+        .product-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card h3 {
+            font-size: 1.5rem;
+            color: var(--purple);
+            margin-bottom: 1rem;
+        }
+
+        .product-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-link:hover {
+            gap: 0.8rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 5%;
+            background: var(--lavender);
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .about-content h2 {
+            color: var(--purple);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .value-card h4 {
+            color: var(--purple);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-card p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .differentiators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .diff-card {
+            background: linear-gradient(135deg, var(--purple), var(--cyan));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .diff-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            background: var(--lavender);
+            padding: 3rem;
+            border-radius: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--purple);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--slate);
+            border-radius: 8px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--gold);
+            color: white;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 156, 45, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: var(--cyan);
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-cta {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--cyan);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                padding: 2rem;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                padding: 1rem 3%;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+
+            .hero {
+                padding: 3rem 3%;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .products, .about, .contact {
+                padding: 3rem 3%;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="navigateTo('home')">
+                <img src="https://i.imgur.com/YourLogoPlaceholder.png" alt="MediaPulse AI Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div style="display: none; font-size: 1.5rem; font-weight: 700; color: var(--purple);">MediaPulse AI</div>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a onclick="navigateTo('home')" class="nav-link">Home</a></li>
+                <li><a onclick="navigateTo('products')" class="nav-link">Products</a></li>
+                <li><a onclick="navigateTo('about')" class="nav-link">About</a></li>
+                <li><a onclick="navigateTo('contact')" class="nav-link">Contact</a></li>
+                <li><a onclick="navigateTo('contact')" class="nav-cta">Book Demo</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1>MediaPulse AI</h1>
+                    <p class="hero-tagline">Clarity from Chaos</p>
+                    <p>Emotion-aware media intelligence that turns breaking conversations into confident decisions—fast.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="navigateTo('products')">See Live Pulse</button>
+                        <button class="btn-secondary" onclick="navigateTo('contact')">Book Demo</button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="data-viz">📊 Real-Time Analytics</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Products Page -->
+    <div id="products" class="page">
+        <section class="products">
+            <h2 class="section-title">Our Intelligence Suite</h2>
+            <p class="section-subtitle">Everything you need to monitor, measure, and act on media sentiment</p>
+            
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-icon">🎯</div>
+                    <h3>Emotion Analytics</h3>
+                    <p>Tracks sentiment trends across media channels in real-time, quantifying tone across all platforms.</p>
+                    <a href="#" class="product-link">View dashboard demo →</a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-icon">📈</div>
+                    <h3>Narrative Monitoring</h3>
+                    <p>Predictive AI detects early-stage storylines and identifies trending topics before they break.</p>
+                    <a href="#" class="product-link">Explore features →</a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-icon">🚨</div>
+                    <h3>Crisis Alerts</h3>
+                    <p>Sends real-time notifications for spikes in reputation risk and sentiment drops.</p>
+                    <a href="#" class="product-link">See alert system →</a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-icon">🔗</div>
+                    <h3>Integration API</h3>
+                    <p>Enables seamless CRM/BI integrations for effortless data flow across your organization.</p>
+                    <a href="#" class="product-link">View API docs →</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <section class="about">
+            <div class="about-container">
+                <div class="about-content">
+                    <h2>Our Story</h2>
+                    <p><strong>MediaPulse AI began as a university research project</strong> exploring sentiment analysis in news data. Today, it's a dynamic AI-powered tool helping organizations worldwide bring clarity to chaos.</p>
+                    
+                    <p>We help brands cut through media noise with emotion-aware analytics, providing clarity when public narratives shift.</p>
+
+                    <h3 style="color: var(--purple); margin-top: 2rem; margin-bottom: 1rem;">Our Mission</h3>
+                    <p>Help media teams make confident, data-driven decisions in real time.</p>
+
+                    <h3 style="color: var(--purple); margin-top: 2rem; margin-bottom: 1rem;">Our Vision</h3>
+                    <p>Transform complex media signals into meaningful clarity.</p>
+                </div>
+
+                <h2 class="section-title">Core Values</h2>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <h4>Evidence-Based</h4>
+                        <p>Every insight is backed by real sources, timestamps, and confidence scores.</p>
+                    </div>
+                    <div class="value-card">
+                        <h4>Neutral & Unbiased</h4>
+                        <p>No political framing, no emotional manipulation—only data-driven reading.</p>
+                    </div>
+                    <div class="value-card">
+                        <h4>Transparency</h4>
+                        <p>Shows reasoning, keyword triggers, and source citations.</p>
+                    </div>
+                    <div class="value-card">
+                        <h4>Clarity Over Complexity</h4>
+                        <p>Human-readable summaries instead of dashboards or filters.</p>
+                    </div>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 3rem;">What Makes Us Different</h2>
+                <div class="differentiators">
+                    <div class="diff-card">
+                        <h4>Precision Analytics</h4>
+                        <p>Detect emotional shifts with high accuracy</p>
+                    </div>
+                    <div class="diff-card">
+                        <h4>Real-Time Insights</h4>
+                        <p>Live monitoring to anticipate breaking stories</p>
+                    </div>
+                    <div class="diff-card">
+                        <h4>Ethical AI</h4>
+                        <p>Privacy-first, transparent analytics</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <section class="contact">
+            <div class="contact-container">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-subtitle">Get in touch for demos, collaborations, or media inquiries</p>
+                
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" placeholder="Your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="your.email@company.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company" placeholder="Your company name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Tell us about your project..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                    <p style="text-align: center; margin-top: 1rem; color: #666;">We'll get back to you within 24 hours</p>
+                </form>
+
+                <div class="social-links">
+                    <a href="#" class="social-icon" aria-label="LinkedIn">in</a>
+                    <a href="#" class="social-icon" aria-label="Twitter">𝕏</a>
+                    <a href="#" class="social-icon" aria-label="YouTube">▶</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-cta">Ready to pulse with precision?</p>
+            <p>Book your demo today</p>
+            <p style="margin-top: 2rem; opacity: 0.7;">© 2025 MediaPulse AI. All rights reserved.</p>
+            <p style="opacity: 0.7;">Evidence-Based • Neutral & Unbiased • Transparency • Clarity Over Complexity</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation System
+        function navigateTo(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageName).classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Close mobile menu if open
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            navLinks.classList.remove('active');
+            mobileMenuBtn.textContent = '☰';
+        }
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+            e.target.reset();
+        });
+
+        // Load logo from uploaded image
+        window.addEventListener('load', () => {
+            const logoImg = document.querySelector('.logo img');
+            // Replace this URL with your actual logo URL after uploading
+            logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM0NzMzN0EiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5NZWRpYVB1bHNlIEFJPC90ZXh0Pjwvc3ZnPg==';
+        });
+    </script>
+</body>
+</html>
 
